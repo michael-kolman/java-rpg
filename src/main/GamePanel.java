@@ -3,6 +3,7 @@ package main;
 //import org.w3c.dom.ls.LSOutput;
 
 import body.Player;
+import tile.TileManager;
 
 import java.awt.*;
 import javax.swing.JPanel;
@@ -14,21 +15,17 @@ public class GamePanel extends JPanel implements Runnable{
     final int SCALE = 3; // scale up our tiles, characters, etc
 
     public final int TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE; // 48 x 48 pixels
-    final int MAX_SCREEN_COLUMNS = 16;
-    final int MAX_SCREEN_ROWS = 12;
-    final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COLUMNS; // 768 pixels
-    final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROWS; // 576 pixels
+    public final int MAX_SCREEN_COLUMNS = 16;
+    public final int MAX_SCREEN_ROWS = 12;
+    public final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COLUMNS; // 768 pixels
+    public final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROWS; // 576 pixels
 
     int FPS = 60;
 
+    TileManager tileManager = new TileManager(this);
     KeyHandler keyHandler = new KeyHandler();
     Thread gameThread;
     Player player = new Player(this, keyHandler);
-
-    // set player's default position
-    int playerX = 100;
-    int playerY = 100;
-    int playerSpeed = 4;
 
     public GamePanel(){
 
@@ -120,6 +117,8 @@ public class GamePanel extends JPanel implements Runnable{
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D)g;
+
+        tileManager.draw(g2);
 
         player.draw(g2);
 
