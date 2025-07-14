@@ -3,6 +3,7 @@ package main;
 //import org.w3c.dom.ls.LSOutput;
 
 import body.Player;
+import object.SuperObject;
 import tile.TileManager;
 
 import java.awt.*;
@@ -33,7 +34,9 @@ public class GamePanel extends JPanel implements Runnable{
     KeyHandler keyHandler = new KeyHandler();
     Thread gameThread;
     public CollisionChecker collisionChecker = new CollisionChecker(this);
+    public AssetSetter assetSetter = new AssetSetter(this);
     public Player player = new Player(this, keyHandler);
+    public SuperObject[] obj = new SuperObject[10];
 
     public GamePanel(){
 
@@ -42,6 +45,11 @@ public class GamePanel extends JPanel implements Runnable{
         this.setDoubleBuffered(true);
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
+    }
+
+    public void setUpGame(){
+
+        assetSetter.setObject();
     }
 
     public void startGameThread(){
@@ -94,8 +102,17 @@ public class GamePanel extends JPanel implements Runnable{
 
         Graphics2D g2 = (Graphics2D)g;
 
+        //TILE
         tileManager.draw(g2);
 
+        //OBJECTS
+        for (SuperObject superObject : obj) {
+            if (superObject != null) {
+                superObject.draw(g2, this);
+            }
+        }
+
+        //PLAYER
         player.draw(g2);
 
         g2.dispose();
