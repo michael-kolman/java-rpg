@@ -32,6 +32,7 @@ public class GamePanel extends JPanel implements Runnable{
     TileManager tileManager = new TileManager(this);
     KeyHandler keyHandler = new KeyHandler();
     Thread gameThread;
+    public CollisionChecker collisionChecker = new CollisionChecker(this);
     public Player player = new Player(this, keyHandler);
 
     public GamePanel(){
@@ -50,38 +51,6 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     @Override
-//    public void run() {
-//
-//        double drawInterval = (double) 1000000000 / FPS; //0.01666 seconds
-//        double nextDrawTime = System.nanoTime() + drawInterval;
-//
-//
-//        //game loop goes here
-//        while(gameThread != null){
-//
-//            // 1. Update information such as position
-//            update();
-//            // 2. Draw the screen, characters, etc
-//            repaint();
-//
-//            try {
-//                double remainingTime = nextDrawTime - System.nanoTime();
-//                remainingTime = remainingTime/1000000; // convert nanoseconds to milliseconds
-//
-//                if(remainingTime < 0){
-//                    remainingTime = 0;
-//                }
-//
-//                Thread.sleep((long) remainingTime);
-//
-//                nextDrawTime += drawInterval;
-//
-//            } catch (InterruptedException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
-//    }
-
     public void run(){
 
         double drawInterval = (double) 1000000000 / FPS;

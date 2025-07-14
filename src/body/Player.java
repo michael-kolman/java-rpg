@@ -26,6 +26,8 @@ public class Player extends Body{
         screenX = gp.SCREEN_WIDTH / 2 - (gp.TILE_SIZE / 2);
         screenY = gp.SCREEN_HEIGHT / 2 - (gp.TILE_SIZE / 2);
 
+        collisionShape = new Rectangle(8, 16, 32, 32);
+
         setDefaultValues();
         getPlayerImage();
     }
@@ -58,31 +60,53 @@ public class Player extends Body{
 
     public void update(){
 
-        if (kh.upPressed){
-            direction = "up";
-            worldY -= speed;
-        } else if (kh.downPressed) {
-            direction = "down";
-            worldY += speed;
-        } else if (kh.leftPressed) {
-            direction = "left";
-            worldX -= speed;
-        } else if (kh.rightPressed) {
-            direction = "right";
-            worldX += speed;
-        }
+        if (kh.upPressed || kh.downPressed || kh.leftPressed || kh.rightPressed){
 
-        spriteCounter++;
-        if(spriteCounter > 12){
-            if(spriteNum == 1){
-                spriteNum = 2;
-            } else if (spriteNum == 2) {
-                spriteNum = 1;
+            if (kh.upPressed){
+                direction = "up";
+            } else if (kh.downPressed) {
+                direction = "down";
+            } else if (kh.leftPressed) {
+                direction = "left";
+            } else if (kh.rightPressed) {
+                direction = "right";
             }
-            spriteCounter = 0;
+
+
+            // check tile collision
+            collisionOn = false;
+            gp.collisionChecker.checkTile(this);
+
+            // if collision is false, then player can move
+            if (!collisionOn){
+
+                switch (direction){
+                    case "up":
+                        worldY -= speed;
+                        break;
+                    case "down":
+                        worldY += speed;
+                        break;
+                    case "left":
+                        worldX -= speed;
+                        break;
+                    case "right":
+                        worldX += speed;
+                        break;
+                }
+            }
+
+            spriteCounter++;
+            if(spriteCounter > 12){
+                if(spriteNum == 1){
+                    spriteNum = 2;
+                } else if (spriteNum == 2) {
+                    spriteNum = 1;
+                }
+                spriteCounter = 0;
+            }
         }
     }
-
     public void draw(Graphics2D g2){
 
         BufferedImage image = null;
