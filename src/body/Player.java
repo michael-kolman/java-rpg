@@ -14,10 +14,17 @@ public class Player extends Body{
     GamePanel gp;
     KeyHandler kh;
 
+    // player character's position on the screen
+    public final int screenX;
+    public final int screenY;
+
     public Player(GamePanel gp, KeyHandler kh){
 
         this.gp = gp;
         this.kh = kh;
+
+        screenX = gp.SCREEN_WIDTH / 2 - (gp.TILE_SIZE / 2);
+        screenY = gp.SCREEN_HEIGHT / 2 - (gp.TILE_SIZE / 2);
 
         setDefaultValues();
         getPlayerImage();
@@ -25,8 +32,8 @@ public class Player extends Body{
 
     public void setDefaultValues(){
 
-        x = 100;
-        y = 100;
+        worldX = gp.TILE_SIZE * 14;
+        worldY = gp.TILE_SIZE * 13;
         speed = 4;
         direction = "down";
     }
@@ -53,16 +60,16 @@ public class Player extends Body{
 
         if (kh.upPressed){
             direction = "up";
-            y -= speed;
+            worldY -= speed;
         } else if (kh.downPressed) {
             direction = "down";
-            y += speed;
+            worldY += speed;
         } else if (kh.leftPressed) {
             direction = "left";
-            x -= speed;
+            worldX -= speed;
         } else if (kh.rightPressed) {
             direction = "right";
-            x += speed;
+            worldX += speed;
         }
 
         spriteCounter++;
@@ -120,6 +127,6 @@ public class Player extends Body{
                 break;
         }
 
-        g2.drawImage(image, x, y, gp.TILE_SIZE, gp.TILE_SIZE, null);
+        g2.drawImage(image, screenX, screenY, gp.TILE_SIZE, gp.TILE_SIZE, null);
     }
 }
