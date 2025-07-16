@@ -15,5 +15,6 @@ public class Body {
     public int spriteNum = 1;
 
     public Rectangle collisionShape;
+    public int collisionDefaultX, collisionDefaultY;
     public boolean collisionOn = false;
 }

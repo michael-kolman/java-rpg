@@ -13,5 +13,6 @@ public class Door extends SuperObject {
         catch (Exception e){
             System.out.println(e.getMessage());
         }
+        collision = true;
     }
 }

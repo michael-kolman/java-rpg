@@ -18,6 +18,8 @@ public class Player extends Body{
     public final int screenX;
     public final int screenY;
 
+    int keyCount = 0;
+
     public Player(GamePanel gp, KeyHandler kh){
 
         this.gp = gp;
@@ -27,6 +29,8 @@ public class Player extends Body{
         screenY = gp.SCREEN_HEIGHT / 2 - (gp.TILE_SIZE / 2);
 
         collisionShape = new Rectangle(8, 16, 32, 32);
+        collisionDefaultX = collisionShape.x;
+        collisionDefaultY = collisionShape.y;
 
         setDefaultValues();
         getPlayerImage();
@@ -77,6 +81,10 @@ public class Player extends Body{
             collisionOn = false;
             gp.collisionChecker.checkTile(this);
 
+            //check object collision
+            int objectIndex = gp.collisionChecker.checkObject(this, true);
+            pickUpObject(objectIndex);
+
             // if collision is false, then player can move
             if (!collisionOn){
 
@@ -107,6 +115,30 @@ public class Player extends Body{
             }
         }
     }
+
+    public void pickUpObject(int i){
+
+        if (i != 999){
+
+            String objectName = gp.objects[i].name;
+
+            switch (objectName){
+                case "key":
+                    keyCount++;
+                    gp.objects[i] = null;
+                    System.out.println("Keys: " + keyCount);
+                    break;
+                case "door":
+                    if(keyCount > 0){
+                        gp.objects[i] = null;
+                        keyCount--;
+                    }
+                    System.out.println("Keys: " + keyCount);
+                    break;
+            }
+        }
+    }
+
     public void draw(Graphics2D g2){
 
         BufferedImage image = null;

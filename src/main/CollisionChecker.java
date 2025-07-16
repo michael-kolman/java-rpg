@@ -60,4 +60,76 @@ public class CollisionChecker {
                 break;
         }
     }
+
+    public int checkObject(Body body, boolean player){
+
+        int index = 999;
+
+        for (int i = 0; i < gp.objects.length; i++) {
+
+            if(gp.objects[i] != null){
+                // get body's collision shape coordinates
+                body.collisionShape.x = body.worldX + body.collisionShape.x;
+                body.collisionShape.y = body.worldY + body.collisionShape.y;
+
+                // get the object's collision shape
+                gp.objects[i].collisionShape.x = gp.objects[i].worldX + gp.objects[i].collisionShape.x;
+                gp.objects[i].collisionShape.y = gp.objects[i].worldY + gp.objects[i].collisionShape.y;
+
+                switch (body.direction){
+                    case "up" :
+                        body.collisionShape.y -= body.speed;
+                        if(body.collisionShape.intersects(gp.objects[i].collisionShape)){
+                            if(gp.objects[i].collision){
+                                body.collisionOn = true;
+                            }
+                            if(player){
+                                index = i;
+                            }
+                        }
+                        break;
+                    case "down" :
+                        body.collisionShape.y += body.speed;
+                        if(body.collisionShape.intersects(gp.objects[i].collisionShape)){
+                            if(gp.objects[i].collision){
+                                body.collisionOn = true;
+                            }
+                            if(player){
+                                index = i;
+                            }
+                        }
+                        break;
+                    case "left" :
+                        body.collisionShape.x -= body.speed;
+                        if(body.collisionShape.intersects(gp.objects[i].collisionShape)){
+                            if(gp.objects[i].collision){
+                                body.collisionOn = true;
+                            }
+                            if(player){
+                                index = i;
+                            }
+                        }
+                        break;
+                    case "right" :
+                        body.collisionShape.x += body.speed;
+                        if(body.collisionShape.intersects(gp.objects[i].collisionShape)){
+                            if(gp.objects[i].collision){
+                                body.collisionOn = true;
+                            }
+                            if(player){
+                                index = i;
+                            }
+                        }
+                        break;
+                }
+
+                body.collisionShape.x = body.collisionDefaultX;
+                body.collisionShape.y = body.collisionDefaultY;
+                gp.objects[i].collisionShape.x = gp.objects[i].collisionDefaultX;
+                gp.objects[i].collisionShape.y = gp.objects[i].collisionDefaultY;
+            }
+        }
+        
+        return index;
+    }
 }

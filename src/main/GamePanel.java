@@ -36,7 +36,7 @@ public class GamePanel extends JPanel implements Runnable{
     public CollisionChecker collisionChecker = new CollisionChecker(this);
     public AssetSetter assetSetter = new AssetSetter(this);
     public Player player = new Player(this, keyHandler);
-    public SuperObject[] obj = new SuperObject[10];
+    public SuperObject[] objects = new SuperObject[10];
 
     public GamePanel(){
 
@@ -106,7 +106,7 @@ public class GamePanel extends JPanel implements Runnable{
         tileManager.draw(g2);
 
         //OBJECTS
-        for (SuperObject superObject : obj) {
+        for (SuperObject superObject : objects) {
             if (superObject != null) {
                 superObject.draw(g2, this);
             }
