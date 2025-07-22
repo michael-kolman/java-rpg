@@ -125,16 +125,23 @@ public class Player extends Body{
             switch (objectName){
                 case "key":
                     keyCount++;
+                    gp.playSound(1);
                     gp.objects[i] = null;
                     System.out.println("Keys: " + keyCount);
                     break;
                 case "door":
                     if(keyCount > 0){
+                        gp.playSound(3);
                         gp.objects[i] = null;
                         keyCount--;
                     }
                     System.out.println("Keys: " + keyCount);
                     break;
+                case "boots":
+                    gp.playSound(2);
+                    speed -= 1;
+                    gp.objects[i] = null;
+                    System.out.println("Got weighted training boots!");
             }
         }
     }
