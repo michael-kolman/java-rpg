@@ -18,7 +18,7 @@ public class Player extends Body{
     public final int screenX;
     public final int screenY;
 
-    int keyCount = 0;
+    public int keyCount = 0;
 
     public Player(GamePanel gp, KeyHandler kh){
 
@@ -127,21 +127,30 @@ public class Player extends Body{
                     keyCount++;
                     gp.playSound(1);
                     gp.objects[i] = null;
-                    System.out.println("Keys: " + keyCount);
+                    gp.ui.showMessage("Got key!");
                     break;
                 case "door":
                     if(keyCount > 0){
                         gp.playSound(3);
                         gp.objects[i] = null;
                         keyCount--;
+                        gp.ui.showMessage("Opened door!");
                     }
-                    System.out.println("Keys: " + keyCount);
+                    else {
+                        gp.ui.showMessage("This door is locked.");
+                    }
                     break;
                 case "boots":
                     gp.playSound(2);
                     speed -= 1;
                     gp.objects[i] = null;
-                    System.out.println("Got weighted training boots!");
+                    gp.ui.showMessage("Got weighted training boots!");
+                    break;
+                case "chest":
+                    gp.ui.gameFinished = true;
+                    gp.stopMusic();
+                    gp.playSound(4);
+                    break;
             }
         }
     }
