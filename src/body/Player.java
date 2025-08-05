@@ -2,11 +2,9 @@ package body;
 
 import main.GamePanel;
 import main.KeyHandler;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.Objects;
 
 public class Player extends Body{
@@ -19,6 +17,8 @@ public class Player extends Body{
     public final int screenY;
 
     public int keyCount = 0;
+    boolean moving = false;
+    int pixelCounter = 0;
 
     public Player(GamePanel gp, KeyHandler kh){
 
@@ -28,7 +28,7 @@ public class Player extends Body{
         screenX = gp.SCREEN_WIDTH / 2 - (gp.TILE_SIZE / 2);
         screenY = gp.SCREEN_HEIGHT / 2 - (gp.TILE_SIZE / 2);
 
-        collisionShape = new Rectangle(8, 16, 32, 32);
+        collisionShape = new Rectangle(1, 1, 46, 46);
         collisionDefaultX = collisionShape.x;
         collisionDefaultY = collisionShape.y;
 
@@ -64,26 +64,31 @@ public class Player extends Body{
 
     public void update(){
 
-        if (kh.upPressed || kh.downPressed || kh.leftPressed || kh.rightPressed){
+        if(!moving){
+            if (kh.upPressed || kh.downPressed || kh.leftPressed || kh.rightPressed){
 
-            if (kh.upPressed){
-                direction = "up";
-            } else if (kh.downPressed) {
-                direction = "down";
-            } else if (kh.leftPressed) {
-                direction = "left";
-            } else if (kh.rightPressed) {
-                direction = "right";
+                if (kh.upPressed){
+                    direction = "up";
+                } else if (kh.downPressed) {
+                    direction = "down";
+                } else if (kh.leftPressed) {
+                    direction = "left";
+                } else if (kh.rightPressed) {
+                    direction = "right";
+                }
+
+                moving = true;
+
+                // check tile collision
+                collisionOn = false;
+                gp.collisionChecker.checkTile(this);
+
+                //check object collision
+                int objectIndex = gp.collisionChecker.checkObject(this, true);
+                pickUpObject(objectIndex);
             }
-
-
-            // check tile collision
-            collisionOn = false;
-            gp.collisionChecker.checkTile(this);
-
-            //check object collision
-            int objectIndex = gp.collisionChecker.checkObject(this, true);
-            pickUpObject(objectIndex);
+        }
+        if (moving){
 
             // if collision is false, then player can move
             if (!collisionOn){
@@ -112,6 +117,12 @@ public class Player extends Body{
                     spriteNum = 1;
                 }
                 spriteCounter = 0;
+            }
+
+            pixelCounter += speed;
+            if(pixelCounter == gp.TILE_SIZE){
+                moving = false;
+                pixelCounter = 0;
             }
         }
     }
@@ -200,5 +211,9 @@ public class Player extends Body{
         }
 
         g2.drawImage(image, screenX, screenY, gp.TILE_SIZE, gp.TILE_SIZE, null);
+
+        // draw collision shape for testing purposes
+        g2.setColor(Color.RED);
+        g2.drawRect(screenX + collisionShape.x, screenY + collisionShape.y, collisionShape.width, collisionShape.height);
     }
 }

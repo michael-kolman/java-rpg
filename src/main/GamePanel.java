@@ -1,7 +1,5 @@
 package main;
 
-//import org.w3c.dom.ls.LSOutput;
-
 import body.Player;
 import object.SuperObject;
 import tile.TileManager;
